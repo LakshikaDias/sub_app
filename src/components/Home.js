@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addSubject } from "../redux/slices/subject";
+import { addSubject, deleteSubject } from "../redux/slices/subject";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -15,8 +15,25 @@ const Home = () => {
       {/* start subject display  */}
       <div>
         {sub
-          ? sub.map((s) => {
-              return <div>{s}</div>;
+          ? sub.map((subject, index) => {
+              return (
+                <div>
+                  {subject}
+
+                  {/* start delete button */}
+                  <button
+                    key={index}
+                    onClick={() => {
+                      dispatch(deleteSubject(index));
+                    }}
+                  >
+                    delete
+                  </button>
+                  {/* end delete button */}
+
+                  <button>edit</button>
+                </div>
+              );
             })
           : ""}
       </div>

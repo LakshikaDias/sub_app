@@ -11,8 +11,15 @@ export const subjectSlice = createSlice({
     addSubject: (state, actions) => {
       state.subject.push(actions.payload);
     },
+    deleteSubject: (state, action) => {
+      const newSubArry = state.subject.filter((_, index) => {
+        return action.payload != index;
+      });
+      state.subject = newSubArry;
+      console.log("hiii", newSubArry);
+    },
   },
 });
 
-export const { addSubject } = subjectSlice.actions;
+export const { addSubject, deleteSubject } = subjectSlice.actions;
 export default subjectSlice.reducer;
