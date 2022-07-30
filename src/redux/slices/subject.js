@@ -12,14 +12,26 @@ export const subjectSlice = createSlice({
       state.subject.push(actions.payload);
     },
     deleteSubject: (state, action) => {
-      const newSubArry = state.subject.filter((_, index) => {
+      const newDeleteSubArry = state.subject.filter((_, index) => {
         return action.payload != index;
       });
-      state.subject = newSubArry;
-      console.log("hiii", newSubArry);
+      state.subject = newDeleteSubArry;
+      // console.log("hiii", newSubArry);
+    },
+    editSubject: (state, action) => {
+      console.log("kkkkk", action.payload);
+      const newEditSubArray = state.subject.map((sub, index) => {
+        if (index == action.payload.index) {
+          return action.payload.subject;
+        } else {
+          return sub;
+        }
+      });
+      // console.log("heloo", newEditSubArray);
+      state.subject = newEditSubArray;
     },
   },
 });
 
-export const { addSubject, deleteSubject } = subjectSlice.actions;
+export const { addSubject, deleteSubject, editSubject } = subjectSlice.actions;
 export default subjectSlice.reducer;

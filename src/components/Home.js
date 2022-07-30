@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addSubject, deleteSubject } from "../redux/slices/subject";
+import {
+  addSubject,
+  deleteSubject,
+  editSubject,
+} from "../redux/slices/subject";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -10,6 +14,10 @@ const Home = () => {
 
   console.log(sub);
   const [subject, setSubject] = useState("Add new subject");
+
+  const [editMode, setEditMode] = useState(null);
+
+  // const [edit, setEdit] = useState({ id: null, value: "" });
   return (
     <div>
       {/* start subject display  */}
@@ -31,7 +39,19 @@ const Home = () => {
                   </button>
                   {/* end delete button */}
 
-                  <button>edit</button>
+                  {/* start edit button */}
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setSubject(subject);
+                      setEditMode(index);
+
+                      // console.log("now", subject);
+                    }}
+                  >
+                    edit
+                  </button>
+                  {/* end edit button */}
                 </div>
               );
             })
@@ -50,11 +70,16 @@ const Home = () => {
         ></input>
         <button
           onClick={() => {
-            dispatch(addSubject(subject));
+            if (editMode != null) {
+              dispatch(editSubject({ index: editMode, subject: subject }));
+            } else {
+              dispatch(addSubject(subject));
+              setEditMode(null);
+            }
             setSubject("Add new Subject");
           }}
         >
-          Add
+          {editMode != null ? <>edit</> : <>add</>}
         </button>
       </div>
       {/* end input form */}
