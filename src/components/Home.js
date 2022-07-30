@@ -1,23 +1,27 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   addSubject,
   deleteSubject,
   editSubject,
 } from "../redux/slices/subject";
 
+import { addMySubject } from "../redux/slices/mySubject";
+
 const Home = () => {
-  const dispatch = useDispatch();
+  // Display subjects
   const sub = useSelector((state) => {
     return state.subject.subject;
   });
 
-  console.log(sub);
-  const [subject, setSubject] = useState("Add new subject");
+  const dispatch = useDispatch();
+
+  // console.log(sub);
+  const [subject, setSubject] = useState("");
 
   const [editMode, setEditMode] = useState(null);
 
-  // const [edit, setEdit] = useState({ id: null, value: "" });
   return (
     <div>
       {/* start subject display  */}
@@ -32,6 +36,7 @@ const Home = () => {
                   <button
                     key={index}
                     onClick={() => {
+                      // sent data to slice via dispatch
                       dispatch(deleteSubject(index));
                     }}
                   >
@@ -45,13 +50,22 @@ const Home = () => {
                     onClick={() => {
                       setSubject(subject);
                       setEditMode(index);
-
                       // console.log("now", subject);
                     }}
                   >
                     edit
                   </button>
                   {/* end edit button */}
+
+                  {/* start add to my profile button */}
+                  <button
+                    onClick={() => {
+                      dispatch(addMySubject(subject));
+                    }}
+                  >
+                    AddToMe
+                  </button>
+                  {/* end add to my profile button */}
                 </div>
               );
             })
@@ -64,6 +78,7 @@ const Home = () => {
         <input
           type="text"
           value={subject}
+          placeholder="Add new subject"
           onChange={(e) => {
             setSubject(e.target.value);
           }}
@@ -71,16 +86,25 @@ const Home = () => {
         <button
           onClick={() => {
             if (editMode != null) {
+              // sent data to slice via dispatch
               dispatch(editSubject({ index: editMode, subject: subject }));
             } else {
+              // sent data to slice via dispatch
               dispatch(addSubject(subject));
               setEditMode(null);
             }
-            setSubject("Add new Subject");
+            setSubject("");
           }}
         >
           {editMode != null ? <>edit</> : <>add</>}
         </button>
+        {/* start To profile page */}
+        <div>
+          <Link to="/profile">
+            <button>To profile......</button>
+          </Link>
+        </div>
+        {/* end To profile page */}
       </div>
       {/* end input form */}
     </div>
